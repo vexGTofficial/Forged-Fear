@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Forged Fear VR — immersive psychological horror for virtual reality.">
+<title>FORGED FEAR // VR</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
+body{
+    background:#080909;
+    color:#e8e8e5;
+    font-family:Arial,Helvetica,sans-serif;
+    overflow-x:hidden;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1000;
+    opacity:.035;
+    background:repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        #fff 4px
+    );
+}
+
+body:after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:999;
+    background:radial-gradient(
+        ellipse at center,
+        transparent 35%,
+        rgba(0,0,0,.65) 100%
+    );
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font:inherit;
+}
+
+nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:72px;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 5vw;
+    background:rgba(8,9,9,.75);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+}
+
+.logo{
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:4px;
+}
+
+.logo b{
+    color:#777;
+}
+
+nav ul{
+    list-style:none;
+    display:flex;
+    gap:30px;
+}
+
+nav li a{
+    color:#898989;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1.8px;
+    transition:.2s;
+}
+
+nav li a:hover{
+    color:#fff;
+}
+
+.menu{
+    display:none;
+    background:none;
+    border:1px solid #444;
+    color:#fff;
+    padding:9px 13px;
+    font-size:10px;
+}
+
+.container{
+    width:min(1150px,84vw);
+    margin:auto;
+}
+
+.section{
+    padding:140px 0;
+}
+
+.label{
+    color:#626565;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:3px;
+    margin-bottom:18px;
+}
+
+.heading{
+    max-width:850px;
+    font-size:clamp(45px,7vw,85px);
+    line-height:.9;
+    letter-spacing:-5px;
+    font-weight:800;
+}
+
+.heading span{
+    color:#666;
+}
+
+.intro{
+    max-width:680px;
+    margin-top:30px;
+    color:#999;
+    font-size:14px;
+    line-height:1.9;
+}
+
+/* HOME */
+
+#home{
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    align-items:center;
+    padding:130px 8vw 100px;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.95) 0%,
+            rgba(0,0,0,.72) 45%,
+            rgba(0,0,0,.9) 100%
+        ),
+        radial-gradient(
+            circle at 75% 50%,
+            #26282a 0,
+            #111313 35%,
+            #080909 70%
+        );
+}
+
+#home:before{
+    content:"";
+    position:absolute;
+    width:700px;
+    height:700px;
+    right:-250px;
+    top:50%;
+    transform:translateY(-50%);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:50%;
+    box-shadow:
+        0 0 0 80px rgba(255,255,255,.012),
+        0 0 0 160px rgba(255,255,255,.008);
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    max-width:850px;
+}
+
+.signal{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:28px;
+    color:#858585;
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:3px;
+}
+
+.signal i{
+    width:7px;
+    height:7px;
+    display:block;
+    border-radius:50%;
+    background:#b9c0bc;
+    box-shadow:0 0 12px #fff;
+}
+
+.hero-title{
+    font-size:clamp(70px,12vw,160px);
+    line-height:.8;
+    letter-spacing:-9px;
+    font-weight:900;
+}
+
+.hero-title span{
+    color:transparent;
+    -webkit-text-stroke:1px #aaa;
+}
+
+.hero-text{
+    max-width:620px;
+    margin-top:42px;
+    color:#aaa;
+    font-size:15px;
+    line-height:1.9;
+}
+
+.buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:32px;
+}
+
+.button{
+    display:inline-flex;
+    min-height:48px;
+    align-items:center;
+    justify-content:center;
+    padding:0 21px;
+    border:1px solid #4b4d4d;
+    background:rgba(255,255,255,.035);
+    color:#ddd;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:1.8px;
+    transition:.25s;
+}
+
+.button:hover{
+    background:#eee;
+    color:#080909;
+    border-color:#eee;
+}
+
+.button.light{
+    background:#eee;
+    color:#080909;
+}
+
+.side-label{
+    position:absolute;
+    right:5vw;
+    bottom:70px;
+    writing-mode:vertical-rl;
+    color:#4c4d4d;
+    font-size:8px;
+    font-weight:700;
+    letter-spacing:4px;
+}
+
+/* WORLD */
+
+#world{
+    background:linear-gradient(180deg,#080909,#0c0d0d);
+}
+
+.level-grid{
+    margin-top:65px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:2px;
+    border:1px solid #202222;
+}
+
+.level{
+    min-height:270px;
+    position:relative;
+    padding:25px;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.04),
+        rgba(255,255,255,.008)
+    );
+    border:1px solid #191b1b;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.level:hover{
+    background:#151717;
+    transform:scale(1.015);
+    z-index:2;
+}
+
+.level-number{
+    color:#5b5e5e;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:3px;
+}
+
+.level h3{
+    position:absolute;
+    left:25px;
+    bottom:57px;
+    font-size:22px;
+}
+
+.level p{
+    position:absolute;
+    left:25px;
+    bottom:27px;
+    color:#666;
+    font-size:8px;
+    font-weight:700;
+    letter-spacing:1.5px;
+}
+
+.level:after{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:120px;
+    right:-55px;
+    top:-55px;
+    border:1px solid #303333;
+    border-radius:50%;
+}
+
+/* EXPERIENCE */
+
+#experience{
+    border-top:1px solid #151717;
+    background:#0a0b0b;
+}
+
+.feature-list{
+    margin-top:65px;
+    border-top:1px solid #242626;
+}
+
+.feature{
+    display:grid;
+    grid-template-columns:80px 1fr 1fr;
+    gap:30px;
+    padding:35px 0;
+    border-bottom:1px solid #242626;
+}
+
+.feature-number{
+    color:#565959;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.feature h3{
+    font-size:22px;
+}
+
+.feature p{
+    color:#888;
+    font-size:13px;
+    line-height:1.8;
+}
+
+/* PURCHASES */
+
+#store{
+    background:
+        radial-gradient(
+            circle at 80% 40%,
+            rgba(160,160,160,.07),
+            transparent 35%
+        ),
+        #080909;
+}
+
+.purchase-box{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    border:1px solid #282a2a;
+}
+
+.purchase-main{
+    padding:50px;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.045),
+        rgba(255,255,255,.01)
+    );
+}
+
+.purchase-main h3{
+    font-size:30px;
+    margin-bottom:18px;
+}
+
+.purchase-main p{
+    color:#999;
+    max-width:600px;
+    line-height:1.9;
+    font-size:13px;
+}
+
+.purchase-side{
+    padding:50px;
+    border-left:1px solid #282a2a;
+}
+
+.purchase-side strong{
+    display:block;
+    color:#666;
+    font-size:8px;
+    letter-spacing:3px;
+    margin-bottom:12px;
+}
+
+.purchase-side span{
+    font-size:14px;
+    color:#bbb;
+    line-height:1.7;
+}
+
+/* QUOTE */
+
+.quote{
+    padding:160px 0;
+    border-top:1px solid #171919;
+    border-bottom:1px solid #171919;
+}
+
+.quote p{
+    font-size:clamp(38px,7vw,90px);
+    font-weight:800;
+    letter-spacing:-5px;
+    line-height:.9;
+}
+
+.quote span{
+    color:#555;
+}
+
+/* COMMUNITY */
+
+#community{
+    background:#0b0c0c;
+}
+
+.socials{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:35px;
+}
+
+.social{
+    padding:15px 20px;
+    border:1px solid #343737;
+    color:#aaa;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:1.8px;
+    transition:.2s;
+}
+
+.social:hover{
+    background:#eee;
+    color:#080909;
+    border-color:#eee;
+}
+
+/* PRIVACY */
+
+#privacy{
+    display:none;
+    min-height:100vh;
+    padding-top:72px;
+}
+
+.privacy-header{
+    min-height:60vh;
+    display:flex;
+    align-items:flex-end;
+    padding:100px 0 80px;
+    border-bottom:1px solid #202222;
+}
+
+.privacy-title{
+    font-size:clamp(60px,11vw,125px);
+    line-height:.82;
+    letter-spacing:-7px;
+    font-weight:900;
+}
+
+.privacy-title span{
+    color:transparent;
+    -webkit-text-stroke:1px #999;
+}
+
+.updated{
+    margin-top:30px;
+    color:#666;
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:2px;
+}
+
+.privacy-content{
+    padding:80px 0 140px;
+}
+
+.privacy-intro{
+    padding:30px;
+    margin-bottom:14px;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.045),
+        rgba(255,255,255,.01)
+    );
+    border:1px solid #272929;
+    color:#aaa;
+    font-size:14px;
+    line-height:1.9;
+}
+
+.privacy-card{
+    margin-bottom:14px;
+    padding:35px;
+    border:1px solid #202222;
+    background:#0b0c0c;
+}
+
+.privacy-number{
+    color:#565959;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:3px;
+    margin-bottom:18px;
+}
+
+.privacy-card h2{
+    font-size:22px;
+    margin-bottom:17px;
+}
+
+.privacy-card p{
+    color:#999;
+    font-size:13px;
+    line-height:1.95;
+}
+
+.privacy-card strong{
+    color:#ddd;
+}
+
+.service-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:2px;
+    margin-top:25px;
+}
+
+.service{
+    padding:25px;
+    min-height:190px;
+    border:1px solid #202222;
+    background:#0e0f0f;
+}
+
+.service h3{
+    font-size:16px;
+    margin-bottom:12px;
+}
+
+.service p{
+    font-size:11px;
+    line-height:1.8;
+}
+
+.contact{
+    padding:35px;
+    border:1px solid #353737;
+    background:radial-gradient(
+        circle at 80% 50%,
+        rgba(255,255,255,.06),
+        transparent 50%
+    );
+}
+
+.contact h2{
+    font-size:22px;
+    margin-bottom:17px;
+}
+
+.contact p{
+    color:#999;
+    font-size:13px;
+    line-height:1.95;
+}
+
+.contact a{
+    display:inline-block;
+    margin-top:20px;
+    padding:14px 20px;
+    border:1px solid #444;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:2px;
+    transition:.2s;
+}
+
+.contact a:hover{
+    background:#eee;
+    color:#080909;
+}
+
+/* FOOTER */
+
+footer{
+    padding:45px 8vw;
+    border-top:1px solid #202222;
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    flex-wrap:wrap;
+    color:#505353;
+    font-size:8px;
+    font-weight:700;
+    letter-spacing:1.5px;
+}
+
+footer div:last-child{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+footer a:hover{
+    color:#ddd;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+    nav{
+        padding:0 6vw;
+    }
+
+    nav ul{
+        display:none;
+        position:absolute;
+        top:72px;
+        left:0;
+        width:100%;
+        flex-direction:column;
+        gap:0;
+        background:#090a0a;
+        border-bottom:1px solid #222;
+    }
+
+    nav ul.open{
+        display:flex;
+    }
+
+    nav li a{
+        display:block;
+        padding:18px 6vw;
+        border-bottom:1px solid #191b1b;
+    }
+
+    .menu{
+        display:block;
+    }
+
+    #home{
+        padding:120px 6vw 90px;
+    }
+
+    .hero-title{
+        font-size:clamp(65px,18vw,110px);
+        letter-spacing:-6px;
+    }
+
+    .side-label{
+        display:none;
+    }
+
+    .container{
+        width:88vw;
+    }
+
+    .section{
+        padding:100px 0;
+    }
+
+    .level-grid{
+        grid-template-columns:1fr;
+    }
+
+    .feature{
+        grid-template-columns:50px 1fr;
+    }
+
+    .feature p{
+        grid-column:2;
+    }
+
+    .purchase-box{
+        grid-template-columns:1fr;
+    }
+
+    .purchase-side{
+        border-left:0;
+        border-top:1px solid #282a2a;
+    }
+
+    .service-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .hero-text{
+        font-size:13px;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .button{
+        width:100%;
+    }
+
+    .heading{
+        letter-spacing:-3px;
+    }
+
+    .purchase-main,
+    .purchase-side,
+    .privacy-card,
+    .privacy-intro,
+    .contact{
+        padding:25px;
+    }
+
+    .quote p{
+        letter-spacing:-3px;
+    }
+
+    footer{
+        flex-direction:column;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<a href="#home" class="logo" onclick="showHome()">
+FORGED<b>//</b>FEAR
+</a>
+
+<button class="menu" onclick="toggleMenu()">MENU</button>
+
+<ul id="navLinks">
+
+<li><a href="#home" onclick="showHome()">HOME</a></li>
+<li><a href="#world" onclick="showHome()">THE WORLD</a></li>
+<li><a href="#experience" onclick="showHome()">EXPERIENCE</a></li>
+<li><a href="#store" onclick="showHome()">IN-GAME</a></li>
+<li><a href="#privacy" onclick="showPrivacy()">PRIVACY</a></li>
+
+</ul>
+
+</nav>
+
+
+<!-- HOME -->
+
+<main id="home">
+
+<section id="homeHero">
+
+<div class="hero-content">
+
+<div class="signal">
+<i></i>
+SYSTEM ONLINE // VR HORROR EXPERIENCE
+</div>
+
+<h1 class="hero-title">
+FORGED<br>
+<span>FEAR</span>
+</h1>
+
+<p class="hero-text">
+
+A first-person VR horror experience blending
+the unsettling mystery of the Backrooms with
+the surreal atmosphere of Dreamcore.
+
+<br><br>
+
+You are alone.
+You are lost.
+And something is waiting for you.
+
+</p>
+
+<div class="buttons">
+
+<a href="#world" class="button light">
+ENTER THE WORLD
+</a>
+
+<a href="https://discord.gg/TCCTKRGQcs"
+target="_blank"
+class="button">
+JOIN THE DISCORD
+</a>
+
+</div>
+
+</div>
+
+<div class="side-label">
+REALITY IS NOT GUARANTEED
+</div>
+
+</section>
+
+
+<section id="world">
+
+<div class="container section">
+
+<div class="label">
+01 // THE WORLD
+</div>
+
+<h2 class="heading">
+ELEVEN LEVELS.<br>
+<span>NO ESCAPE.</span>
+</h2>
+
+<p class="intro">
+
+Trapped inside a world that feels strangely
+familiar yet completely wrong, explore 11
+handcrafted levels filled with unique environments,
+sounds, secrets and hidden dangers.
+
+</p>
+
+<div class="level-grid">
+
+<div class="level">
+<div class="level-number">LEVEL 01</div>
+<h3>The Familiar</h3>
+<p>YOU'VE SEEN THIS PLACE BEFORE.</p>
+</div>
+
+<div class="level">
+<div class="level-number">LEVEL 02</div>
+<h3>Abandoned</h3>
+<p>THE LIGHTS NEVER TURN OFF.</p>
+</div>
+
+<div class="level">
+<div class="level-number">LEVEL 03</div>
+<h3>The Facility</h3>
+<p>SOMETHING IS STILL RUNNING.</p>
+</div>
+
+<div class="level">
+<div class="level-number">LEVEL 04</div>
+<h3>Dreamcore</h3>
+<p>THE WORLD STOPS MAKING SENSE.</p>
+</div>
+
+<div class="level">
+<div class="level-number">LEVEL 05</div>
+<h3>Unknown</h3>
+<p>DO NOT TRUST WHAT YOU SEE.</p>
+</div>
+
+<div class="level">
+<div class="level-number">LEVEL 06 — 11</div>
+<h3>REDACTED</h3>
+<p>ACCESS RESTRICTED.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="experience">
+
+<div class="container section">
+
+<div class="label">
+02 // EXPERIENCE
+</div>
+
+<h2 class="heading">
+MADE TO FEEL<br>
+<span>REAL.</span>
+</h2>
+
+<p class="intro">
+
+Forged Fear is designed around immersion.
+Realistic scale, atmospheric lighting and
+spatial audio work together to make the
+environment feel physically present.
+
+</p>
+
+<div class="feature-list">
+
+<div class="feature">
+<div class="feature-number">01</div>
+<h3>Full VR Immersion</h3>
+<p>Designed specifically for virtual reality, putting you directly inside the world.</p>
+</div>
+
+<div class="feature">
+<div class="feature-number">02</div>
+<h3>Spatial Audio</h3>
+<p>Sounds exist around you. Footsteps, distant noises and unexpected encounters can come from anywhere.</p>
+</div>
+
+<div class="feature">
+<div class="feature-number">03</div>
+<h3>Atmospheric Worlds</h3>
+<p>Every level has its own visual identity, lighting, sounds and atmosphere.</p>
+</div>
+
+<div class="feature">
+<div class="feature-number">04</div>
+<h3>Hidden Secrets</h3>
+<p>Explore carefully. The maze contains secrets and encounters that aren't immediately obvious.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="store">
+
+<div class="container section">
+
+<div class="label">
+03 // IN-GAME
+</div>
+
+<h2 class="heading">
+MAKE IT<br>
+<span>YOURS.</span>
+</h2>
+
+<p class="intro">
+
+Forged Fear now includes optional in-game
+purchases. Players can obtain additional
+cosmetic and customization content while
+continuing to experience the horror.
+
+</p>
+
+<div class="purchase-box">
+
+<div class="purchase-main">
+
+<h3>In-Game Purchases</h3>
+
+<p>
+
+Optional purchases are available inside
+Forged Fear. Purchases are used for
+in-game content and cosmetics.
+
+<br><br>
+
+Purchases are not required to play the
+core horror experience.
+
+</p>
+
+</div>
+
+<div class="purchase-side">
+
+<strong>OPTIONAL</strong>
+
+<span>
+Enhance your experience without
+changing the core gameplay.
+</span>
+
+<br>
+
+<strong>COSMETICS</strong>
+
+<span>
+Customize your presence inside
+the world of Forged Fear.
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="quote">
+
+<div class="container">
+
+<p>
+The deeper you go,<br>
+<span>the less the world makes sense.</span>
+</p>
+
+</div>
+
+</section>
+
+
+<section id="community">
+
+<div class="container section">
+
+<div class="label">
+04 // COMMUNITY
+</div>
+
+<h2 class="heading">
+DON'T GET<br>
+<span>LOST ALONE.</span>
+</h2>
+
+<p class="intro">
+
+Follow Forged Fear for development updates,
+videos, announcements, secrets and more.
+
+</p>
+
+<div class="socials">
+
+<a class="social"
+href="https://www.youtube.com/@forgedfearvr"
+target="_blank">
+YOUTUBE
+</a>
+
+<a class="social"
+href="https://www.tiktok.com/@forgedfearvr"
+target="_blank">
+TIKTOK
+</a>
+
+<a class="social"
+href="https://discord.gg/TCCTKRGQcs"
+target="_blank">
+DISCORD
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- PRIVACY -->
+
+<section id="privacy">
+
+<div class="privacy-header">
+
+<div class="container">
+
+<div class="label">
+FORGED FEAR // LEGAL
+</div>
+
+<h1 class="privacy-title">
+PRIVACY<br>
+<span>POLICY</span>
+</h1>
+
+<div class="updated">
+LAST UPDATED // AUGUST 23, 2026
+</div>
+
+</div>
+
+</div>
+
+
+<div class="privacy-content">
+
+<div class="container">
+
+<div class="privacy-intro">
+
+This Privacy Policy explains how Forged Fear
+handles player data.
+
+<br><br>
+
+Forged Fear uses Photon Voice for voice chat,
+Photon Cloud for multiplayer networking, and
+PlayFab for cosmetics, accounts, and moderation.
+
+</div>
+
+
+<div class="privacy-card">
+
+<div class="privacy-number">
+01 // INFORMATION WE COLLECT
+</div>
+
+<h2>Player Data</h2>
+
+<p>
+Forged Fear uses several third-party services
+to provide multiplayer and gameplay functionality.
+</p>
+
+<div class="service-grid">
+
+<div class="service">
+
+<h3>Photon Voice</h3>
+
+<p>
+Processes live voice audio for real-time
+communication.
+
+<br><br>
+
+Audio is not stored by Forged Fear.
+</p>
+
+</div>
+
+<div class="service">
+
+<h3>Photon Multiplayer</h3>
+
+<p>
+Handles multiplayer networking,
+routing and session data.
+
+<br><br>
+
+Forged Fear does not store this
+networking data ourselves.
+</p>
+
+</div>
+
+<div class="service">
+
+<h3>PlayFab</h3>
+
+<p>
+Stores player IDs, cosmetics, ban status,
+device information and region.
+
+<br><br>
+
+This information is used for gameplay
+features and moderation.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="privacy-card">
+
+<div class="privacy-number">
+02 // HOW WE USE DATA
+</div>
+
+<h2>Why Data Is Used</h2>
+
+<p>
+
+We use data only for multiplayer functionality,
+voice chat, cosmetics, moderation and improving
+game performance.
+
+<br><br>
+
+<strong>We do not sell player data.</strong>
+
+</p>
+
+</div>
+
+
+<div class="privacy-card">
+
+<div class="privacy-number">
+03 // THIRD-PARTY SERVICES
+</div>
+
+<h2>External Providers</h2>
+
+<p>
+
+Photon Voice, Photon Cloud and PlayFab are
+third-party services used by Forged Fear.
+
+<br><br>
+
+These services have their own privacy policies
+and terms that govern how information processed
+by their platforms is handled.
+
+</p>
+
+</div>
+
+
+<div class="privacy-card">
+
+<div class="privacy-number">
+04 // DATA STORAGE
+</div>
+
+<h2>Where Data Is Stored</h2>
+
+<p>
+
+Forged Fear does not store personal data on
+its own servers.
+
+<br><br>
+
+Persistent player data used by the game is
+stored through PlayFab.
+
+</p>
+
+</div>
+
+
+<div class="privacy-card">
+
+<div class="privacy-number">
+05 // IN-GAME PURCHASES
+</div>
+
+<h2>Purchases</h2>
+
+<p>
+
+Forged Fear includes optional in-game purchases.
+
+<br><br>
+
+Purchases may involve information being processed
+by the platform or payment provider through which
+the purchase is made.
+
+<br><br>
+
+Forged Fear does not directly store complete
+payment card information.
+
+<br><br>
+
+Purchase-related information may also be used
+to provide purchased in-game content and prevent
+unauthorized use.
+
+</p>
+
+</div>
+
+
+<div class="privacy-card">
+
+<div class="privacy-number">
+06 // CHILDREN'S PRIVACY
+</div>
+
+<h2>Age Requirement</h2>
+
+<p>
+
+Forged Fear is not intended for children
+under the age of 13.
+
+</p>
+
+</div>
+
+
+<div class="contact">
+
+<div class="privacy-number">
+07 // CONTACT
+</div>
+
+<h2>Questions?</h2>
+
+<p>
+
+For privacy-related questions or concerns,
+contact LoopHole Studios through the
+official Forged Fear Discord server.
+
+</p>
+
+<a href="https://discord.gg/TCCTKRGQcs"
+target="_blank">
+CONTACT US ON DISCORD
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<div>
+FORGED FEAR VR // LOOPHOLE STUDIOS
+</div>
+
+<div>
+
+<a href="#home" onclick="showHome()">
+MAIN SITE
+</a>
+
+<a href="#privacy" onclick="showPrivacy()">
+PRIVACY
+</a>
+
+<a href="https://discord.gg/TCCTKRGQcs"
+target="_blank">
+DISCORD
+</a>
+
+</div>
+
+</footer>
+
+
+<script>
+
+const home = document.getElementById("home");
+const privacy = document.getElementById("privacy");
+const navLinks = document.getElementById("navLinks");
+
+function showPrivacy(){
+
+    home.style.display="none";
+    privacy.style.display="block";
+
+    navLinks.classList.remove("open");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+    history.replaceState(null,"","#privacy");
+}
+
+function showHome(){
+
+    privacy.style.display="none";
+    home.style.display="block";
+
+    navLinks.classList.remove("open");
+}
+
+function toggleMenu(){
+
+    navLinks.classList.toggle("open");
+
+}
+
+if(window.location.hash === "#privacy"){
+    showPrivacy();
+}
+
+</script>
+
+</body>
+</html>
